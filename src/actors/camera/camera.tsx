@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { useFrame, useThree } from 'react-three-fiber'
 
-export const Camera = (props: any) => {
+export const Camera = () => {
   // This reference will give us direct access to the mesh
 
   const directions = {
@@ -52,11 +52,11 @@ export const Camera = (props: any) => {
     let x = camera.position.x
     let y = camera.position.y
 
-    x = directions.left ? x + 0.1 : x
-    x = directions.right ? x - 0.1 : x
+    x = directions.left ? x - 0.1 : x
+    x = directions.right ? x + 0.1 : x
 
-    y = directions.up ? y - 0.1 : y
-    y = directions.down ? y + 0.1 : y
+    y = directions.up ? y + 0.1 : y
+    y = directions.down ? y - 0.1 : y
 
     camera.position.set(x, y, 5)
   

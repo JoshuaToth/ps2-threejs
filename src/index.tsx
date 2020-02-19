@@ -6,13 +6,17 @@ import { Canvas } from 'react-three-fiber'
 import { Box } from './actors/box/box'
 import { Camera } from './actors/camera/camera'
 import './styles.css'
+import { Player } from './actors/player/player'
 
 ReactDOM.render(
   <Canvas >
+	<ambientLight />
+    <pointLight position={[10, 10, 10]} />
     <Box position={[0, 0, -2]} />
     <Box position={[5, 0, -2]} />
     <Box position={[-5, 0, -2]} />
     <Camera />
+	<Player />
   </Canvas>,
   document.getElementById('root')
 )
