@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker'
 import { Canvas } from 'react-three-fiber'
 import { Box } from './actors/box/box'
 import { Camera } from './actors/camera/camera'
+import './styles.css'
 
 ReactDOM.render(
   <Canvas >

@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
 import { useFrame, useThree } from 'react-three-fiber'
-import * as THREE from 'three'
 
 export const Camera = (props: any) => {
   // This reference will give us direct access to the mesh
