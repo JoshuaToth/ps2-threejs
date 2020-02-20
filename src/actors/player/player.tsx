@@ -16,7 +16,6 @@ export const Player = (props: any) => {
   )
 
   return useMemo(() => {
-    console.log(position)
     return (
       <mesh {...props} position={new Vector3( position.x, position.y, position.z )} ref={mesh}>
         <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />

@@ -13,12 +13,12 @@ export const Camera = () => {
 
   document.addEventListener('keydown', event => {
     switch (event.key) {
-      case 'w':
-        directions.up = true
-        return;
-      case 's':
-        directions.down = true
-        return;
+      // case 'w':
+      //   directions.up = true
+      //   return;
+      // case 's':
+      //   directions.down = true
+      //   return;
       case 'a':
         directions.left = true
         return;
@@ -31,12 +31,12 @@ export const Camera = () => {
   document.addEventListener('keyup', event => {
 
     switch (event.key) {
-      case 'w':
-        directions.up = false
-        break;
-      case 's':
-        directions.down = false
-        break;
+      // case 'w':
+      //   directions.up = false
+      //   break;
+      // case 's':
+      //   directions.down = false
+      //   break;
       case 'a':
         directions.left = false
         break;
@@ -52,13 +52,13 @@ export const Camera = () => {
     let x = camera.position.x
     let y = camera.position.y
 
-    x = directions.left ? x - 0.1 : x
-    x = directions.right ? x + 0.1 : x
+    x = directions.left ? x - 0.13 : x
+    x = directions.right ? x + 0.13 : x
 
     y = directions.up ? y + 0.1 : y
     y = directions.down ? y - 0.1 : y
 
-    camera.position.set(x, y, 5)
+    camera.position.set(x, y + 0.02, 20)
   
   })
   return <></>
