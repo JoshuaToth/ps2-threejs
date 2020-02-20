@@ -11,11 +11,11 @@ import { Plane } from './actors/plane/plane'
 import { Provider } from './useCannon'
 
 ReactDOM.render(
-  <Canvas camera={{ position: [0, 0, 15] }}>
+  <Canvas camera={{ position: [0, 0, 25] }}>
     <ambientLight />
     <pointLight position={[10, 10, 10]} />
     <Provider>
-      <Plane position={[0, 0, -10]} />
+      <Plane position={[0, 0, 0]} />
       <Box position={[1, 0, 1]} />
       <Box position={[2, 1, 5]} />
       <Box position={[0, 0, 6]} />
