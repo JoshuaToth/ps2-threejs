@@ -9,23 +9,18 @@ import './styles.css'
 import { Player } from './actors/player/player'
 import { Plane } from './actors/plane/plane'
 import { Provider } from './useCannon'
+import { ProviderContainer } from './provider/provider'
+import { GameContextProvider } from './provider/context'
 
 ReactDOM.render(
-  <Canvas camera={{ position: [0, 0, 25] }}>
-    <ambientLight />
-    <pointLight position={[10, 10, 10]} />
-    <Provider>
-      <Plane position={[0, 0, 0]} />
-      <Box position={[1, 0, 1]} />
-      <Box position={[2, 1, 5]} />
-      <Box position={[0, 0, 6]} />
-      <Box position={[-1, 1, 8]} />
-      <Box position={[-2, 2, 13]} />
-      <Box position={[2, -1, 13]} />
-      <Player position={[0, 0, 13]} />
-    </Provider>
-    <Camera />
-  </Canvas>,
+  <GameContextProvider>
+    <Canvas camera={{ position: [0, 0, 25] }}>
+      <ambientLight />
+      <pointLight position={[10, 10, 10]} />
+      <ProviderContainer />
+      <Camera />
+    </Canvas>
+  </GameContextProvider>,
   document.getElementById('root')
 )
 

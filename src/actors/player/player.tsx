@@ -3,6 +3,8 @@ import { useFrame, useThree, ReactThreeFiber, useLoader } from 'react-three-fibe
 import { Mesh, Vector3, RepeatWrapping, TextureLoader } from 'three'
 import { useCannon } from '../../useCannon'
 import { Box, Vec3, Sphere } from 'cannon';
+import { BoxGhost } from '../box/boxGhost';
+import { boxProps } from '../../provider/store/game-state';
 
 export const Player = (props: any) => {
   // This reference will give us direct access to the mesh
@@ -24,7 +26,6 @@ export const Player = (props: any) => {
 
   useFrame(() =>
     ref.body.position = new Vec3(camera.position.x, camera.position.y, ref.body.position.z)
-    // setPosition()
   )
 
   return (
@@ -32,6 +33,11 @@ export const Player = (props: any) => {
     {/* <mesh ref={ref} {...props} position={new Vector3( position.x, position.y, position.z )} castShadow receiveShadow> */}
       <sphereBufferGeometry attach="geometry" args={[1, 8, 8]} />
       <meshStandardMaterial roughness={0.5} attach="material" color={'hotpink'} />
+      {
+        props.boxes.map((box: boxProps) => (
+          <BoxGhost key={box.id} position={box.position} />
+        ))
+      }
     </mesh>
   )
 }
