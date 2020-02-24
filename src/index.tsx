@@ -4,7 +4,6 @@ import './index.css'
 import * as serviceWorker from './serviceWorker'
 import { Canvas } from 'react-three-fiber'
 import { Box } from './actors/box/box'
-import { Camera } from './actors/camera/camera'
 import './styles.css'
 import { Player } from './actors/player/player'
 import { Plane } from './actors/plane/plane'
@@ -18,7 +17,6 @@ ReactDOM.render(
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <ProviderContainer />
-      <Camera />
     </Canvas>
   </GameContextProvider>,
   document.getElementById('root')
