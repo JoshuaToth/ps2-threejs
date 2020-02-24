@@ -10,4 +10,9 @@ export interface IGameState {
   worldBoxes: stealableProps[]
   playerBoxes: stealableProps[]
   playerBody?: CANNON.Body
+  player: IPlayer
+}
+
+export interface IPlayer {
+	mass: number
 }

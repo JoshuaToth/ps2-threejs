@@ -10,4 +10,7 @@ export const intialState = (): IGameState => ({
     { id: 5, position: new CANNON.Vec3(-1, 1, 8), size: 1 },
   ],
   playerBoxes: [],
+  player: {
+	  mass: 2
+  }
 })

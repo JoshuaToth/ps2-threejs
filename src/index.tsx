@@ -9,16 +9,13 @@ import { Player } from './actors/player/player'
 import { Plane } from './actors/plane/plane'
 import { Provider } from './useCannon'
 import { ProviderContainer } from './provider/provider'
-import { GameContextProvider } from './provider/context'
 
 ReactDOM.render(
-  <GameContextProvider>
     <Canvas camera={{ position: [0, 0, 25] }}>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
       <ProviderContainer />
-    </Canvas>
-  </GameContextProvider>,
+    </Canvas>,
   document.getElementById('root')
 )
 
