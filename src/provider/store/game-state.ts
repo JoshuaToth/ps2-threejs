@@ -1,9 +1,12 @@
-export interface boxProps {
+import * as CANNON from 'cannon'
+
+export interface stealableProps {
   id: number
-  position: number[]
+  position: CANNON.Vec3
+  size: number
 }
 
 export interface IGameState {
-	worldBoxes: boxProps[]
-	playerBoxes: boxProps[]
+  worldBoxes: stealableProps[]
+  playerBoxes: stealableProps[]
 }

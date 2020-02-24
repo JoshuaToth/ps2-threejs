@@ -3,18 +3,18 @@ import { useFrame } from 'react-three-fiber'
 import { useCannon } from '../../useCannon'
 import * as CANNON from 'cannon'
 
-export const Box = ({ position, id }: any) => {
+interface IBoxProps {
+  position: CANNON.Vec3
+  id: number
+}
+
+export const Box = ({ position, id }: IBoxProps) => {
   // This reference will give us direct access to the mesh
-  const ref = useCannon({ mass: 100 }, (body: any) => {
+  const ref = useCannon({ mass: 100 }, (body: CANNON.Body) => {
     const box = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
     body.addShape(box)
 
-    body.addEventListener('collide', function(e: any) {
-      console.log('I just got bumped!', id, position)
-      console.log('Collided with body:', e.body)
-      console.log('Contact between bodies:', e.contact)
-    })
-    body.position.set(...position)
+    body.position.set(position.x, position.y, position.z)
   })
 
   return (
