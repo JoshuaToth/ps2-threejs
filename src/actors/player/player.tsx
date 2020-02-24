@@ -1,20 +1,17 @@
-import React, { useRef, useState, useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import {
   useFrame,
   useThree,
-  ReactThreeFiber,
-  useLoader,
 } from 'react-three-fiber'
-import { Mesh, Vector3, RepeatWrapping, TextureLoader } from 'three'
 import { useCannon, useGameContext } from '../../useCannon'
-import { Box, Vec3, Sphere } from 'cannon'
+import { Vec3, Sphere } from 'cannon'
 import { BoxGhost } from '../box/boxGhost'
 import { stealableProps } from '../../provider/store/game-state'
 
 export const Player: React.FC<{position: number[]}> = (props: any) => {
 
   const {
-    state: { playerBoxes },
+    state: { playerBoxes, player },
     dispatch
   } = useGameContext()
 
@@ -67,11 +64,15 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
     body.position.set(0, 0, 0)
     body.linearDamping = body.angularDamping = 0.5
 
-
     dispatch({type: 'GAME_SET_PLAYER', body})
   })
 
-  useFrame(callbackState => {
+  useEffect(() => {
+    ref.body.shapes[0].boundingSphereRadius = player.mass
+    ref.body.shapes[0].updateBoundingSphereRadius()
+  }, [player.mass])
+
+  useFrame(() => {
     let x = 0
     let y = 0
 
@@ -82,7 +83,7 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
     y = directions.down ? y - 300 : y
 
     ref.body.applyImpulse(new Vec3(x, y, 0), new Vec3(0,0,1))
-    camera.position.set(ref.body.position.x, ref.body.position.y, 20)
+    camera.position.set(ref.body.position.x, ref.body.position.y, 20 + player.mass / 2)
 
   })
 
@@ -98,7 +99,7 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
         {/* <mesh ref={ref} {...props} position={new Vector3( position.x, position.y, position.z )} castShadow receiveShadow> */}
         <sphereBufferGeometry attach="geometry" args={[1, 8, 8]} />
         <meshStandardMaterial
-          roughness={0.5}
+          roughness={0.9}
           attach="material"
           color={'hotpink'}
         />

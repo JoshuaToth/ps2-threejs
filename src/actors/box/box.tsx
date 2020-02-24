@@ -10,8 +10,7 @@ export const Box: React.FC<stealableProps> = props => {
     dispatch,
   } = useGameContext()
 
-  const reportPlayer = (e: any) => {
-    console.log('collided')
+  const reportPlayer = () => {
     dispatch({ type: 'PLAYER_COLLIDED', target: props })
   }
   // This reference will give us direct access to the mesh
@@ -23,12 +22,11 @@ export const Box: React.FC<stealableProps> = props => {
   })
 
   useEffect(() => {
-    console.log(playerBody)
     playerBody &&
       ref.body.addEventListener('collide', (e: any) => {
         playerBody &&
           setTimeout(function() {
-            playerBody.id === e.body.id && reportPlayer(e)
+            playerBody.id === e.body.id && reportPlayer()
           }, 0)
       })
   }, [playerBody])

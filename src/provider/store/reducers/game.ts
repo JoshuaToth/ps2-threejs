@@ -27,7 +27,6 @@ const reducers: TGameReducers = action  => ({
 	},
 	GAME_SET_PLAYER: (state: IGameState) => {
 		const {body} = action as TSetPlayerBody
-		console.log('setting body', body)
 		return {
 			...state,
 			playerBody: body
