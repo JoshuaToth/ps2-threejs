@@ -9,4 +9,5 @@ export interface stealableProps {
 export interface IGameState {
   worldBoxes: stealableProps[]
   playerBoxes: stealableProps[]
+  playerBody?: CANNON.Body
 }

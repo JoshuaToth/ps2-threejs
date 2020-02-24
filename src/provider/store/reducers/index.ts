@@ -17,7 +17,7 @@ export const reducers = (
 	const actions = {
 		...gameReducers(action)
 	}
-
+	console.log('called')
 	if (!(action.type in actions)) return state
 
 	return actions[action.type](state)

@@ -10,8 +10,13 @@ import { useCannon } from '../../useCannon'
 import { Box, Vec3, Sphere } from 'cannon'
 import { BoxGhost } from '../box/boxGhost'
 import { stealableProps } from '../../provider/store/game-state'
+import { useGameContext } from '../../provider/context';
 
-export const Player = (props: any) => {
+export const Player: React.FC<{position: number[], boxes: stealableProps[]}> = (props: any) => {
+
+  const {
+    dispatch
+  } = useGameContext()
 
   const directions = {
     up: false,
@@ -61,11 +66,14 @@ export const Player = (props: any) => {
     body.addShape(new Sphere(1))
     body.position.set(0, 0, 0)
     body.linearDamping = body.angularDamping = 0.5
-    body.addEventListener('collide', function(e: any) {
-      // console.log('I just got bumped!', id, position)
-      console.log('Collided with body:', e)
-      console.log('Contact between bodies:', e.contact)
-    })
+    // body.addEventListener('collide', function(e: any) {
+    //   // console.log('I just got bumped!', id, position)
+    //   console.log('Collided with body:', e)
+    //   console.log('Contact between bodies:', e.contact)
+    // })
+
+
+    dispatch({type: 'GAME_SET_PLAYER', body})
   })
 
   useFrame(callbackState => {
