@@ -82,7 +82,7 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
     y = directions.up ? y + 300 : y
     y = directions.down ? y - 300 : y
 
-    ref.body.applyImpulse(new Vec3(x, y, 0), new Vec3(0,0,1))
+    ref.body.applyImpulse(new Vec3(x, y, 0), new Vec3(0,0,player.mass / 4 + 1))
     camera.position.set(ref.body.position.x, ref.body.position.y, 20 + player.mass / 2)
 
   })
