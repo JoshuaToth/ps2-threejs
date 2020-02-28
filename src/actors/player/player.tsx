@@ -1,18 +1,14 @@
 import React, { useMemo, useEffect } from 'react'
-import {
-  useFrame,
-  useThree,
-} from 'react-three-fiber'
+import { useFrame, useThree } from 'react-three-fiber'
 import { useCannon, useGameContext } from '../../useCannon'
 import { Vec3, Sphere } from 'cannon'
 import { BoxGhost } from '../box/boxGhost'
 import { stealableProps } from '../../provider/store/game-state'
 
-export const Player: React.FC<{position: number[]}> = (props: any) => {
-
+export const Player: React.FC<{ position: number[] }> = (props: any) => {
   const {
     state: { playerBoxes, player },
-    dispatch
+    dispatch,
   } = useGameContext()
 
   const directions = {
@@ -26,34 +22,36 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
     switch (event.key) {
       case 'w':
         directions.up = true
-        return;
+        return
       case 's':
         directions.down = true
-        return;
+        return
       case 'a':
         directions.left = true
-        return;
+        return
       case 'd':
         directions.right = true
-        return;
+        return
+      case 'space':
+        directions.right = true
+        return
     }
   })
 
   document.addEventListener('keyup', event => {
-
     switch (event.key) {
       case 'w':
         directions.up = false
-        break;
+        break
       case 's':
         directions.down = false
-        break;
+        break
       case 'a':
         directions.left = false
-        break;
+        break
       case 'd':
         directions.right = false
-        break;
+        break
     }
   })
 
@@ -62,14 +60,16 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
   const ref = useCannon({ mass: 1000 }, (body: CANNON.Body) => {
     body.addShape(new Sphere(1))
     body.position.set(0, 0, 0)
-    body.linearDamping = body.angularDamping = 0.5
+    body.linearDamping = body.angularDamping = 0.8
 
-    dispatch({type: 'GAME_SET_PLAYER', body})
+    dispatch({ type: 'GAME_SET_PLAYER', body })
   })
 
   useEffect(() => {
-    ref.body.shapes[0].boundingSphereRadius = player.mass
-    ref.body.shapes[0].updateBoundingSphereRadius()
+    ;(ref.body.shapes[0] as Sphere).radius = 1 + player.mass / 8
+    ;(ref.body.shapes[0] as Sphere).boundingSphereRadius = 1 + player.mass / 8
+    ref.body.updateBoundingRadius()
+    ref.body.updateMassProperties()
   }, [player.mass])
 
   useFrame(() => {
@@ -82,9 +82,17 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
     y = directions.up ? y + 300 : y
     y = directions.down ? y - 300 : y
 
-    ref.body.applyImpulse(new Vec3(x, y, 0), new Vec3(0,0,player.mass / 4 + 1))
-    camera.position.set(ref.body.position.x, ref.body.position.y, 20 + player.mass / 2)
+    ref.body.applyImpulse(
+      new Vec3(x, y, 0),
+      new Vec3(0, 0, 10)
+    )
+    camera.position.set(
+      ref.body.position.x,
+      ref.body.position.y - 25,
+      20 + player.mass / 4
+    )
 
+    camera.lookAt(ref.body.position.x, ref.body.position.y, ref.body.position.z)
   })
 
   return useMemo(
@@ -97,7 +105,7 @@ export const Player: React.FC<{position: number[]}> = (props: any) => {
         receiveShadow
       >
         {/* <mesh ref={ref} {...props} position={new Vector3( position.x, position.y, position.z )} castShadow receiveShadow> */}
-        <sphereBufferGeometry attach="geometry" args={[1, 8, 8]} />
+        <sphereBufferGeometry attach="geometry" args={[1, 16, 16]} />
         <meshStandardMaterial
           roughness={0.9}
           attach="material"

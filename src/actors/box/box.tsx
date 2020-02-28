@@ -11,6 +11,7 @@ export const Box: React.FC<stealableProps> = props => {
   } = useGameContext()
 
   const reportPlayer = (e: any) => {
+    console.log(e)
     dispatch({ type: 'PLAYER_COLLIDED', target: props, relativePos: {...e.body.quaternion} })
   }
   // This reference will give us direct access to the mesh
