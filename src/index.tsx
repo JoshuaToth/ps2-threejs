@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import * as serviceWorker from './serviceWorker'
@@ -9,13 +9,18 @@ import { Player } from './actors/player/player'
 import { Plane } from './actors/plane/plane'
 import { Provider } from './useCannon'
 import { ProviderContainer } from './provider/provider'
+import { ErrorBoundary } from './ErrorBoundary'
 
 ReactDOM.render(
+  <ErrorBoundary>
     <Canvas camera={{ position: [0, 0, 25] }}>
-      <ambientLight />
-      <pointLight position={[10, 10, 10]} />
-      <ProviderContainer />
-    </Canvas>,
+      <Suspense fallback={<>Loading</>}>
+        <ambientLight />
+        <pointLight position={[10, 10, 10]} />
+        <ProviderContainer />
+      </Suspense>
+    </Canvas>
+  </ErrorBoundary>,
   document.getElementById('root')
 )
 
