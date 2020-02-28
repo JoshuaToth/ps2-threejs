@@ -12,7 +12,6 @@ export const GenericGeos: React.FC<IStolenObject> = props => {
   } = useGameContext()
 
   const ref = useRef()
-
   return useMemo(() => {
     return (
       <mesh ref={ref} args={[props.obj]} castShadow receiveShadow>

@@ -45,7 +45,7 @@ const reducers: TPlayerReducers = action => ({
         playerBoxes,
         player: {
           ...state.player,
-          mass: playerBoxes.length + 1,
+          mass: playerBoxes.length + 2,
         },
       }
     }
@@ -54,6 +54,7 @@ const reducers: TPlayerReducers = action => ({
   PLAYER_ADD_GEO: (state: IGameState) => {
     const { target, relativePos } = action as TAddPlayerGeometry
     const relativeSize = 1 + state.player.mass / 5
+    
     const playerObjects =
       state.playerObjects.indexOf({obj: target, position: relativePos}) >= 0
         ? state.playerObjects
@@ -72,7 +73,7 @@ const reducers: TPlayerReducers = action => ({
       playerObjects,
       player: {
         ...state.player,
-        mass: playerObjects.length + 1,
+        mass: playerObjects.length + 2,
       },
     }
   },

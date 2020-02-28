@@ -18,7 +18,7 @@ export const ProviderContainer: React.FC = () => {
       <Provider>
         <Plane position={[0, 0, 0]} />
         <Player position={[0, 0, 13]}/>
-        {/* <Boxes /> */}
+        <Boxes />
         <Texts position={new Vec3(10,1,3)} phrase={'hello world'}/>
       </Provider>
     ),

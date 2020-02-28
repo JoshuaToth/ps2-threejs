@@ -18,7 +18,7 @@ export const intialState = (): IGameState => ({
   ],
   playerBoxes: [],
   player: {
-	  mass: 4
+	  mass: 2
   },
   playerObjects: []
 })

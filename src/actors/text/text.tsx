@@ -3,31 +3,45 @@ import { useFrame, useLoader } from 'react-three-fiber'
 import { useCannon, useGameContext } from '../../useCannon'
 import * as CANNON from 'cannon'
 import { IStealableProps } from '../../provider/store/game-state'
-import { TextGeometryParameters, FontLoader, Font, TextGeometry, Vector3, TextBufferGeometry, Geometry, BufferGeometry } from 'three';
+import {
+  TextGeometryParameters,
+  FontLoader,
+  Font,
+  TextGeometry,
+  Vector3,
+  TextBufferGeometry,
+  Geometry,
+  BufferGeometry,
+} from 'three'
 
-export const Text: React.FC<IStealableProps & { text: string}> = props => {
+export const Text: React.FC<IStealableProps & { text: string }> = props => {
   const {
-    state: { playerBody, player: {mass} },
+    state: {
+      playerBody,
+      player: { mass },
+    },
     dispatch,
-    world
+    world,
   } = useGameContext()
 
   const [destroyed, setDestroyed] = useState(false)
-  
+  const [listenerSet, setListener] = useState(false)
+  const wordLength = props.text.split(' ').length
+
   const roboto = require('../../assets/roboto.json')
   const font: any = new Font(roboto)
-  const config = useMemo(
-    () => { 
-      return({ font, size: 1, height: 0.5 })},
-    [font]
-  )
-  
+  const config = useMemo(() => {
+    return { font, size: 1, height: 0.5 }
+  }, [font])
+
   const textGeo = new TextBufferGeometry(props.text, config)
   textGeo.computeBoundingBox()
 
   const ref = useCannon({ mass: 1 }, (body: CANNON.Body) => {
     const size = textGeo.boundingBox.getSize(new Vector3())
-    const box = new CANNON.Box(new CANNON.Vec3(size.x, size.y, size.z).scale(0.5))
+    const box = new CANNON.Box(
+      new CANNON.Vec3(size.x, size.y, size.z).scale(0.5)
+    )
     const offsets = [size.x * 0.5, size.y * 0.5, size.z * 0.5]
     body.addShape(box)
 
@@ -46,18 +60,19 @@ export const Text: React.FC<IStealableProps & { text: string}> = props => {
   }
 
   useEffect(() => {
-    playerBody &&
+    if (!listenerSet && playerBody && mass > wordLength) {
+      setListener(true)
       ref.body.addEventListener('collide', (e: any) => {
         playerBody &&
           setTimeout(function() {
-            playerBody.id === e.body.id && mass > props.text.split(' ').length && reportPlayer(e, textGeo)
+            playerBody.id === e.body.id && reportPlayer(e, textGeo)
           }, 0)
       })
-  }, [playerBody, mass])
+    }
+  }, [listenerSet, playerBody, mass])
 
   return useMemo(() => {
-    return (
-      destroyed ? null :
+    return destroyed ? null : (
       <mesh ref={ref.ref} args={[textGeo]} castShadow receiveShadow>
         <meshStandardMaterial
           attach="material"

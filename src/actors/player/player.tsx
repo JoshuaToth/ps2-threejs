@@ -4,6 +4,7 @@ import { useCannon, useGameContext } from '../../useCannon'
 import { Vec3, Sphere } from 'cannon'
 import { BoxGhost } from '../box/boxGhost'
 import { IStealableProps } from '../../provider/store/game-state'
+import { GenericGeos } from './genericGeos'
 
 export const Player: React.FC<{ position: number[] }> = (props: any) => {
   const {
@@ -90,10 +91,7 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
     y = controlDirections.up ? y + 1 : y
     y = controlDirections.down ? y - 1 : y
 
-    ref.body.applyImpulse(
-      new Vec3(x, y, 0),
-      new Vec3(0, 0, 10)
-    )
+    ref.body.applyImpulse(new Vec3(x, y, 0), new Vec3(0, 0, 10))
     camera.position.set(
       ref.body.position.x,
       ref.body.position.y - 25,
@@ -121,6 +119,9 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
         />
         {playerBoxes.map((box: IStealableProps) => (
           <BoxGhost key={box.id} position={box.position} />
+        ))}
+        {playerObjects.map(obj => (
+          <GenericGeos {...obj} />
         ))}
       </mesh>
     ),
