@@ -21,7 +21,8 @@ export const Text: React.FC<stealableProps & { text: string }> = props => {
   }
   // This reference will give us direct access to the mesh
   const ref = useCannon({ mass: 100 }, (body: CANNON.Body) => {
-    const box = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
+    body
+    const box = new CANNON.Box(new CANNON.Vec3(props.text.length, 1, 1))
     body.addShape(box)
 
     body.position.set(props.position.x, props.position.y, props.position.z)
@@ -41,8 +42,7 @@ export const Text: React.FC<stealableProps & { text: string }> = props => {
   const font: any = new Font(roboto)
   const config = useMemo(
     () => { 
-      console.log('font', font)
-      return({ font, size: 1, height: 1 })},
+      return({ font, size: props.text.length, height: 0.5 })},
     [font]
   )
   return useMemo(() => {
