@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect, useState } from 'react'
 import { useFrame, useThree } from 'react-three-fiber'
 import { useCannon, useGameContext } from '../../useCannon'
 import { Vec3, Sphere } from 'cannon'
@@ -11,14 +11,15 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
     dispatch,
   } = useGameContext()
 
-  const directions = {
+  const [controlDirections, setControlDirections] = useState({
     up: false,
     down: false,
     left: false,
     right: false,
-  }
+  })
 
   document.addEventListener('keydown', event => {
+    const directions = controlDirections
     switch (event.key) {
       case 'w':
         directions.up = true
@@ -36,9 +37,11 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
         directions.right = true
         return
     }
+    setControlDirections(directions)
   })
 
   document.addEventListener('keyup', event => {
+    const directions = controlDirections
     switch (event.key) {
       case 'w':
         directions.up = false
@@ -53,6 +56,7 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
         directions.right = false
         break
     }
+    setControlDirections(directions)
   })
 
   const { camera } = useThree()
@@ -76,11 +80,11 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
     let x = 0
     let y = 0
 
-    x = directions.left ? x - 300 : x
-    x = directions.right ? x + 300 : x
+    x = controlDirections.left ? x - 300 : x
+    x = controlDirections.right ? x + 300 : x
 
-    y = directions.up ? y + 300 : y
-    y = directions.down ? y - 300 : y
+    y = controlDirections.up ? y + 300 : y
+    y = controlDirections.down ? y - 300 : y
 
     ref.body.applyImpulse(
       new Vec3(x, y, 0),
