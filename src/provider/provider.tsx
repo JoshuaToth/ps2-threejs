@@ -3,7 +3,7 @@ import { Plane } from '../actors/plane/plane'
 import { Box } from '../actors/box/box'
 import { Player } from '../actors/player/player'
 import { Provider, useGameContext } from '../useCannon'
-import { stealableProps } from './store/game-state'
+import { IStealableProps } from './store/game-state'
 import { Boxes } from '../actors/box/boxes'
 import { Texts } from '../actors/text/texts'
 import { Vec3 } from 'cannon';

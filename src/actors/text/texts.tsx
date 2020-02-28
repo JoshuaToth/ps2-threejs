@@ -15,7 +15,7 @@ export const Texts: React.FC<{ phrase: string; position: Vec3 }> = props => {
             position={
               new Vec3(
                 props.position.x,
-                props.position.y,
+                props.position.y + 10,
                 props.position.z
               )
             }

@@ -1,17 +1,24 @@
 import { Dispatch } from 'react'
 import { TReducers, TReducerAction } from './index'
 import { intialState } from '../init'
-import { IGameState, stealableProps } from '../game-state'
+import { IGameState, IStealableProps, IStolenObject } from '../game-state';
 
 import { Vec3 } from 'cannon'
+import { Geometry, BufferGeometry } from 'three'
 
 export type TCollidedWithPlayer = {
   type: 'PLAYER_COLLIDED'
-  target: stealableProps
+  target: IStealableProps
   relativePos: Vec3
 }
 
-export type TPlayerReducerActions = TCollidedWithPlayer
+export type TAddPlayerGeometry = {
+  type: 'PLAYER_ADD_GEO'
+  target: BufferGeometry
+  relativePos: Vec3
+}
+
+export type TPlayerReducerActions = TCollidedWithPlayer | TAddPlayerGeometry
 
 type TPlayerReducers = TReducers<TPlayerReducerActions>
 
@@ -26,9 +33,9 @@ const reducers: TPlayerReducers = action => ({
           : state.playerBoxes.concat({
               ...target,
               position: new Vec3(
-                - relativePos.x * relativeSize,
-                - relativePos.y * relativeSize,
-                - relativePos.z * relativeSize
+                -relativePos.x * relativeSize,
+                -relativePos.y * relativeSize,
+                -relativePos.z * relativeSize
               ),
             })
 
@@ -43,6 +50,31 @@ const reducers: TPlayerReducers = action => ({
       }
     }
     return state
+  },
+  PLAYER_ADD_GEO: (state: IGameState) => {
+    const { target, relativePos } = action as TAddPlayerGeometry
+    const relativeSize = 1 + state.player.mass / 5
+    const playerObjects =
+      state.playerObjects.indexOf({obj: target, position: relativePos}) >= 0
+        ? state.playerObjects
+        : state.playerObjects.concat({
+            obj: target,
+            position: new Vec3(
+              -relativePos.x * relativeSize,
+              -relativePos.y * relativeSize,
+              -relativePos.z * relativeSize
+            ),
+          })
+
+    return {
+      ...state,
+      worldBoxes: state.worldBoxes.filter(x => x.id !== target.id),
+      playerObjects,
+      player: {
+        ...state.player,
+        mass: playerObjects.length + 1,
+      },
+    }
   },
 })
 

@@ -2,9 +2,9 @@ import React, { useRef, useState, useMemo, useEffect } from 'react'
 import { useFrame } from 'react-three-fiber'
 import { useCannon, useGameContext } from '../../useCannon'
 import * as CANNON from 'cannon'
-import { stealableProps } from '../../provider/store/game-state'
+import { IStealableProps } from '../../provider/store/game-state'
 
-export const Box: React.FC<stealableProps> = props => {
+export const Box: React.FC<IStealableProps> = props => {
   const {
     state: { playerBody },
     dispatch,

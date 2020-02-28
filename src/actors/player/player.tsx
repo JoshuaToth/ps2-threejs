@@ -3,11 +3,11 @@ import { useFrame, useThree } from 'react-three-fiber'
 import { useCannon, useGameContext } from '../../useCannon'
 import { Vec3, Sphere } from 'cannon'
 import { BoxGhost } from '../box/boxGhost'
-import { stealableProps } from '../../provider/store/game-state'
+import { IStealableProps } from '../../provider/store/game-state'
 
 export const Player: React.FC<{ position: number[] }> = (props: any) => {
   const {
-    state: { playerBoxes, player },
+    state: { playerBoxes, player, playerObjects },
     dispatch,
   } = useGameContext()
 
@@ -61,7 +61,7 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
 
   const { camera } = useThree()
 
-  const ref = useCannon({ mass: 1000 }, (body: CANNON.Body) => {
+  const ref = useCannon({ mass: 10 }, (body: CANNON.Body) => {
     body.addShape(new Sphere(1))
     body.position.set(0, 0, 0)
     body.linearDamping = body.angularDamping = 0.8
@@ -76,15 +76,19 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
     ref.body.updateMassProperties()
   }, [player.mass])
 
+  useEffect(() => {
+    console.log(playerObjects)
+  }, [playerObjects])
+
   useFrame(() => {
     let x = 0
     let y = 0
 
-    x = controlDirections.left ? x - 300 : x
-    x = controlDirections.right ? x + 300 : x
+    x = controlDirections.left ? x - 1 : x
+    x = controlDirections.right ? x + 1 : x
 
-    y = controlDirections.up ? y + 300 : y
-    y = controlDirections.down ? y - 300 : y
+    y = controlDirections.up ? y + 1 : y
+    y = controlDirections.down ? y - 1 : y
 
     ref.body.applyImpulse(
       new Vec3(x, y, 0),
@@ -115,11 +119,11 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
           attach="material"
           color={'hotpink'}
         />
-        {playerBoxes.map((box: stealableProps) => (
+        {playerBoxes.map((box: IStealableProps) => (
           <BoxGhost key={box.id} position={box.position} />
         ))}
       </mesh>
     ),
-    [playerBoxes]
+    [playerBoxes, playerObjects]
   )
 }
