@@ -62,7 +62,7 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
 
   const { camera } = useThree()
 
-  const ref = useCannon({ mass: 10 }, (body: CANNON.Body) => {
+  const ref = useCannon({ mass: 1000 }, (body: CANNON.Body) => {
     body.addShape(new Sphere(1))
     body.position.set(0, 0, 0)
     body.linearDamping = body.angularDamping = 0.8
@@ -71,7 +71,7 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
   })
 
   useEffect(() => {
-    ;(ref.body.shapes[0] as Sphere).radius = 1 + player.mass / 8
+    ;(ref.body.shapes[0] as Sphere).radius = 2 + player.mass / 8
     ;(ref.body.shapes[0] as Sphere).boundingSphereRadius = 1 + player.mass / 8
     ref.body.updateBoundingRadius()
     ref.body.updateMassProperties()
@@ -85,17 +85,17 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
     let x = 0
     let y = 0
 
-    x = controlDirections.left ? x - 1 : x
-    x = controlDirections.right ? x + 1 : x
+    x = controlDirections.left ? x - 300 : x
+    x = controlDirections.right ? x + 300 : x
 
-    y = controlDirections.up ? y + 1 : y
-    y = controlDirections.down ? y - 1 : y
+    y = controlDirections.up ? y + 300 : y
+    y = controlDirections.down ? y - 300 : y
 
     ref.body.applyImpulse(new Vec3(x, y, 0), new Vec3(0, 0, 10))
     camera.position.set(
       ref.body.position.x,
-      ref.body.position.y - 25,
-      20 + player.mass / 4
+      ref.body.position.y - 10,
+      40 + player.mass / 8
     )
 
     camera.lookAt(ref.body.position.x, ref.body.position.y, ref.body.position.z)
@@ -117,11 +117,11 @@ export const Player: React.FC<{ position: number[] }> = (props: any) => {
           attach="material"
           color={'hotpink'}
         />
-        {playerBoxes.map((box: IStealableProps) => (
-          <BoxGhost key={box.id} position={box.position} />
+        {playerBoxes.map((box: IStealableProps, index) => (
+          <BoxGhost key={index + 'playerBox'} position={box.position} />
         ))}
-        {playerObjects.map(obj => (
-          <GenericGeos {...obj} />
+        {playerObjects.map((obj, index) => (
+          <GenericGeos {...obj} key={index + 'playerGeo'} />
         ))}
       </mesh>
     ),

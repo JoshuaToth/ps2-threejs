@@ -16,6 +16,7 @@ export const Texts: React.FC<{ phrase: string; position: Vec3 }> = props => {
       <>
         {wordsToPrint.map((phrase, index) => (
           <Text
+            key={index + 'intro'}
             size={1}
             text={phrase}
             id={1}

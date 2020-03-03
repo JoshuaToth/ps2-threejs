@@ -4,7 +4,7 @@ import { useCannon, useGameContext } from '../../useCannon'
 import * as CANNON from 'cannon'
 import { IStealableProps } from '../../provider/store/game-state'
 
-export const Box: React.FC<IStealableProps> = props => {
+export const Box: React.FC<IStealableProps & {size: number}> = props => {
   const {
     state: { playerBody },
     dispatch,
@@ -14,8 +14,8 @@ export const Box: React.FC<IStealableProps> = props => {
     dispatch({ type: 'PLAYER_COLLIDED', target: props, relativePos: {...e.body.quaternion} })
   }
   // This reference will give us direct access to the mesh
-  const ref = useCannon({ mass: 100 }, (body: CANNON.Body) => {
-    const box = new CANNON.Box(new CANNON.Vec3(1, 1, 1))
+  const ref = useCannon({ mass: 1 }, (body: CANNON.Body) => {
+    const box = new CANNON.Box(new CANNON.Vec3(props.size, props.size, props.size))
     body.addShape(box)
 
     body.position.set(props.position.x, props.position.y, props.position.z)

@@ -26,12 +26,12 @@ export const Text: React.FC<IStealableProps & { text: string }> = props => {
 
   const [destroyed, setDestroyed] = useState(false)
   const [listenerSet, setListener] = useState(false)
-  const wordLength = props.text.split(' ').length
+  const wordMass = props.text.split(' ').length * 10
 
   const roboto = require('../../assets/roboto.json')
   const font: any = new Font(roboto)
   const config = useMemo(() => {
-    return { font, size: 1, height: 0.5 }
+    return { font, size: 3, height: 1 }
   }, [font])
 
   const textGeo = new TextBufferGeometry(props.text, config)
@@ -60,7 +60,7 @@ export const Text: React.FC<IStealableProps & { text: string }> = props => {
   }
 
   useEffect(() => {
-    if (!listenerSet && playerBody && mass > wordLength) {
+    if (!listenerSet && playerBody && mass > wordMass) {
       setListener(true)
       ref.body.addEventListener('collide', (e: any) => {
         playerBody &&

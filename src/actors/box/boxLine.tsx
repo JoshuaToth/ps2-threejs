@@ -8,11 +8,21 @@ export const Boxes: React.FC = () => {
     state: { worldBoxes },
   } = useGameContext()
 
+  const lineLength = 20
+
   return useMemo(() => {
+    let start = 0
+    const kiddos: JSX.Element[] = []
+    while (start < lineLength) {
+      kiddos.concat(
+        
+      )
+    }
+
     return (
       <>
         {worldBoxes.map((box: IStealableProps) => (
-          <Box key={box.id + 'box'} {...box} size={1} />
+          <Box key={box.id + 'box'} {...box} size={0.2} />
         ))}
       </>
     )
